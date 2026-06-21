@@ -5,6 +5,7 @@ import { ToolbarButtons } from '@/components/Canvas/ToolbarButtons';
 import { WelcomeOverlay } from '@/components/WelcomeOverlay';
 import { useStore } from '@/store/useStore';
 import { sampleYaml } from '@/utils/sampleData';
+import logo from '@/assets/logo.png';
 
 function decodeFromUrl(b64: string): string {
   return decodeURIComponent(
@@ -38,9 +39,12 @@ export function App() {
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-slate-100">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2 shadow-sm">
-        <div>
-          <h1 className="text-sm font-bold text-slate-800 tracking-tight">Tool Storming</h1>
-          <p className="text-xs text-slate-400">V1</p>
+        <div className="flex items-center gap-2.5">
+          <img src={logo} alt="Tool Storming" className="h-8 w-auto" />
+          <div>
+            <h1 className="text-sm font-bold text-slate-800 tracking-tight">Tool Storming</h1>
+            <p className="text-xs text-slate-400">V1</p>
+          </div>
         </div>
         <ToolbarButtons />
       </header>
