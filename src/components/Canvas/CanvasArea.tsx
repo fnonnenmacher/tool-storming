@@ -57,8 +57,6 @@ export function CanvasArea() {
   const setDrawerNodeId = useStore((s) => s.setDrawerNodeId);
   const snapNodeToColumn = useStore((s) => s.snapNodeToColumn);
   const reorderPersonaPrompts = useStore((s) => s.reorderPersonaPrompts);
-  const activeNodeId = useStore((s) => s.activeNodeId);
-
   const onNodeClick: NodeMouseHandler<ADCNode> = useCallback(
     (_, node) => {
       setActiveNodeId(node.id);

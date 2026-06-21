@@ -1,0 +1,18 @@
+fail_fast: false
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-json
+      - id: check-yaml
+  - repo: local
+    hooks:
+      - id: typecheck
+        name: TypeScript type check
+        entry: npm run typecheck
+        language: system
+        types_or: [ts, tsx]
+        pass_filenames: false
