@@ -4,6 +4,13 @@ A visual, web-based workspace for AI architects. Map user prompts by persona, co
 
 This is a **design artifact**, not an execution engine. Use it to communicate architecture decisions, surface tool reuse opportunities, and share a self-contained HTML snapshot with stakeholders — no server required.
 
+## Try It
+
+| Option | How |
+|--------|-----|
+| **Live app** | Open [toolstorming.nonnenmacher.dev](https://toolstorming.nonnenmacher.dev/) in any modern browser |
+| **Offline / shareable file** | Download `index.html` from the [latest release](https://github.com/fnonnenmacher/tool-storming/releases/latest) and open it by double-clicking — no install, no server |
+
 ---
 
 ## Key Concepts
