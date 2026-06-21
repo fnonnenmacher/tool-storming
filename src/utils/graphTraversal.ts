@@ -43,12 +43,12 @@ export function collectHighlightedIds(
       nodeIds.add(nodeId);
       edgeIds.add(edgeId);
     }
-    // BFS forward through specialization from those tools
+    // BFS backward through specialization from those tools (parents = more generic = alternatives)
     const queue = directTools.map((n) => n.nodeId);
     const visited = new Set<string>([originId, ...queue]);
     while (queue.length > 0) {
       const current = queue.shift()!;
-      for (const { nodeId, edgeId, edgeKind } of outMap.get(current) ?? []) {
+      for (const { nodeId, edgeId, edgeKind } of inMap.get(current) ?? []) {
         if (edgeKind !== 'specialization') continue;
         nodeIds.add(nodeId);
         edgeIds.add(edgeId);
