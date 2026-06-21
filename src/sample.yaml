@@ -1,0 +1,296 @@
+personas:
+  - id: persona-pm
+    label: Product Manager
+  - id: persona-support
+    label: Customer Support Agent
+  - id: persona-risk
+    label: Risk Evaluator
+prompts:
+  - id: p_pm_1
+    label: Show me total revenue and units sold by product category last week.
+    parentId: persona-pm
+    complexity: low
+    value: medium
+    toolIds:
+      - t_gen_sql
+      - t_pm_sales_agg
+      - t_gen_table
+  - id: p_pm_2
+    label: Check if our top-selling apparel SKUs are facing warehouse inventory stockouts.
+    parentId: persona-pm
+    complexity: medium
+    value: high
+    toolIds:
+      - t_pm_sales_agg
+      - t_pm_inventory_check
+      - t_gen_table
+  - id: p_pm_3
+    label: Generate a comprehensive quarterly marketplace analytics dashboard with trendlines.
+    parentId: persona-pm
+    complexity: high
+    value: high
+    toolIds:
+      - t_pm_sales_agg
+      - t_pm_dashboard_view
+  - id: p_supp_1
+    label: Locate order status for transit package
+    parentId: persona-support
+    complexity: low
+    value: medium
+    toolIds:
+      - t_supp_order_fetch
+      - t_supp_timeline_ui
+  - id: p_supp_3
+    label: What is our official policy on returns for open cosmetics purchased during promotion weeks?
+    parentId: persona-support
+    complexity: low
+    value: low
+    toolIds:
+      - t_supp_policy_kb
+  - id: p_supp_4
+    label: >-
+      Compile an enterprise-wide view of this user's transactional history, past messaging interactions, and unresolved
+      tickets.
+    parentId: persona-support
+    complexity: high
+    value: medium
+    toolIds:
+      - t_gen_sql
+      - t_supp_order_fetch
+      - t_supp_timeline_ui
+  - id: p_supp_2
+    label: The customer received a broken item; evaluate compliance rules and initiate a refund gateway call.
+    parentId: persona-support
+    complexity: medium
+    value: high
+    toolIds:
+      - t_supp_order_fetch
+      - t_supp_policy_kb
+      - t_supp_refund_trigger
+  - id: p_risk_1
+    label: Run a fraud check on transaction
+    parentId: persona-risk
+    complexity: high
+    value: high
+    toolIds:
+      - t_supp_order_fetch
+      - t_risk_fraud_brain
+      - t_risk_alert_ui
+  - id: p_risk_2
+    label: >-
+      Extract a list of all accounts sharing device fingerprints that possess documented merchant chargeback historical
+      markers.
+    parentId: persona-risk
+    complexity: medium
+    value: high
+    toolIds:
+      - t_gen_sql
+      - t_risk_chargeback_query
+      - t_risk_alert_ui
+  - id: p_risk_3
+    label: Immediately freeze user profile usr_99218 and append a high-risk security block across their active sessions.
+    parentId: persona-risk
+    complexity: low
+    value: high
+    toolIds:
+      - t_risk_block_user
+  - id: p_risk_4
+    label: Audit regional anti-money laundering (AML) compliance thresholds regarding split-payment gift card balances.
+    parentId: persona-risk
+    complexity: medium
+    value: medium
+    toolIds:
+      - t_gen_search
+tools:
+  - id: t_gen_sql
+    label: Core E-Commerce Relational DB Explorer
+    category: data
+    specificity: 3
+    specializesId: null
+    systemInstruction: >-
+      Converts open analytical questions into structured read-only SQL requests across core relational database tables
+      (Orders, Customers, Items).
+    inputSchema: 'Input(String): Target table request context'
+    outputSchema: 'Output(JSON): Standard data row mapping structures'
+    latencyProfile: ~180ms
+    'y': 44
+  - id: t_gen_api
+    label: Storefront Microservice Gateway Router
+    category: operational
+    specificity: 6
+    specializesId: null
+    systemInstruction: >-
+      Orchestrates backend pipeline calls to access transactional HTTP API end-nodes running within the active checkout
+      and shipping environments.
+    inputSchema: 'Input(Object): target_service_node, dynamic_payload'
+    outputSchema: 'Output(Object): Unparsed transaction system network responses'
+    latencyProfile: ~120ms
+    'y': 313
+  - id: t_gen_search
+    label: Corporate Retail SOP & Document Search
+    category: knowledge
+    specificity: 4
+    specializesId: null
+    systemInstruction: >-
+      Semantic full-text vector index designed to locate compliance guidelines, legal vendor contracts, and internal
+      digital training wikis.
+    inputSchema: 'Input(String): Text query or policy problem context'
+    outputSchema: 'Output(Array): Excerpts of standard operational protocols mapped to matching confidence weights'
+    latencyProfile: ~90ms
+    'y': 789
+  - id: t_gen_table
+    label: Retail Data-Grid Formatter UI
+    category: ui
+    specificity: 5
+    specializesId: null
+    systemInstruction: >-
+      Shared UI component wrapper that converts messy raw data arrays (customers, inventory tracking listings) into
+      responsive visual tables.
+    inputSchema: 'Input(Array): Uniform row properties'
+    outputSchema: 'Output(HTML): Filterable administrative grid view element'
+    latencyProfile: ~15ms
+    'y': 957
+  - id: t_gen_chart
+    label: Commercial Time-Series Plotter UI
+    category: ui
+    specificity: 2
+    specializesId: null
+    systemInstruction: >-
+      Client rendering tool that structures commercial statistical summaries into vector graphics like sales margins,
+      growth paths, or financial counters.
+    inputSchema: 'Input(Object): linear tracking parameters, rendering metrics'
+    outputSchema: 'Output(HTML): Vector line or chart block canvas component'
+    latencyProfile: ~25ms
+    'y': 1131
+  - id: t_pm_sales_agg
+    label: Enterprise Revenue Aggregator
+    category: data
+    specificity: 6
+    specializesId: t_gen_sql
+    systemInstruction: >-
+      Parses transactional ledgers to construct historical category tracking metrics, item volume sizes, and localized
+      store revenue profiles.
+    inputSchema: 'Input(String): category_filter, date_range'
+    outputSchema: 'Output(Table): grouped transactional item sets'
+    latencyProfile: ~260ms
+    'y': -63
+  - id: t_supp_order_fetch
+    label: Order Lifecycle Status Fetcher
+    category: operational
+    specificity: 10
+    specializesId: t_gen_api
+    systemInstruction: >-
+      Reaches into backend distribution fulfillment services to extract real-time carrier progress logs, tracking
+      details, and metadata signatures.
+    inputSchema: 'Input(String): unique_order_id'
+    outputSchema: 'Output(Object): localized logistics tracker coordinates and state flags'
+    latencyProfile: ~190ms
+    'y': 359
+  - id: t_supp_policy_kb
+    label: E-Commerce Returns & Logistics SLA Database
+    category: knowledge
+    specificity: 7
+    specializesId: t_gen_search
+    systemInstruction: >-
+      Contextual corporate catalog holding policy configurations for promotional items, cosmetics, damaged tracking
+      protection clauses, and international wire rules.
+    inputSchema: 'Input(String): query context (e.g., promotional item exceptions)'
+    outputSchema: 'Output(String): direct legal operational parameter boundaries'
+    latencyProfile: ~110ms
+    'y': 733
+  - id: t_risk_chargeback_query
+    label: Fraudulent Dispute Historic Auditor
+    category: data
+    specificity: 8
+    specializesId: t_gen_sql
+    systemInstruction: >-
+      Queries risk telemetry databases to fetch records of merchant chargeback claims, dispute responses, and
+      cross-referenced device IDs.
+    inputSchema: 'Input(String): device_fingerprint, identity_uuid'
+    outputSchema: 'Output(Table): historical payment dispute records'
+    latencyProfile: ~340ms
+    'y': 53
+  - id: t_supp_timeline_ui
+    label: Visual Customer Journey Milestones Viewport
+    category: ui
+    specificity: 10
+    specializesId: t_gen_table
+    systemInstruction: >-
+      Converts raw ordered operational event arrays into clean visual tracking bars marking individual customer service
+      touches, delays, and past tickets.
+    inputSchema: 'Input(Array): linear interaction event logs'
+    outputSchema: 'Output(HTML): horizontal tree node flow viewport structure'
+    latencyProfile: ~20ms
+    'y': 1094
+  - id: t_risk_alert_ui
+    label: Risk Factor Highlight Panel
+    category: ui
+    specificity: 8
+    specializesId: t_gen_table
+    systemInstruction: >-
+      Generates a high-contrast validation dashboard UI highlighting anomaly alerts, geolocation deltas, and matching
+      fraud patterns.
+    inputSchema: 'Input(Object): risk_indicators, verification_failures'
+    outputSchema: 'Output(HTML): color-coded threat panel box view'
+    latencyProfile: ~30ms
+    'y': 1254
+  - id: t_pm_inventory_check
+    label: Warehouse Inventory SKU Buffer Inspector
+    category: operational
+    specificity: 10
+    specializesId: t_gen_api
+    systemInstruction: >-
+      Runs precise real-time hardware counts against specific distribution fulfillment warehouse nodes to catch
+      predictive item out-of-stock events.
+    inputSchema: 'Input(Array): target_product_skus'
+    outputSchema: 'Output(Object): precise physical counts per distribution location'
+    latencyProfile: ~140ms
+    'y': 117
+  - id: t_supp_refund_trigger
+    label: Payment Gateway Direct Ledger Adjuster
+    category: operational
+    specificity: 10
+    specializesId: t_gen_api
+    systemInstruction: >-
+      Interacts directly with external credit merchant interfaces to issue transactional wallet value reversals up to
+      approved organizational thresholds.
+    inputSchema: 'Input(String): target_transaction_id, Float: refund_amount_value'
+    outputSchema: 'Output(Object): gateway bank transaction verification signature'
+    latencyProfile: ~450ms
+    'y': 245
+  - id: t_pm_dashboard_view
+    label: Executive Marketplace Health Dashboard Renderer
+    category: ui
+    specificity: 7
+    specializesId: t_gen_chart
+    systemInstruction: >-
+      High-level compilation interface that updates executive performance scorecards, inventory turnover velocities, and
+      rolling gross margin parameters.
+    inputSchema: 'Input(Object): aggregated_financial_payload'
+    outputSchema: 'Output(HTML): full multi-tab reporting view module'
+    latencyProfile: ~45ms
+    'y': 1099
+  - id: t_risk_fraud_brain
+    label: Real-Time ML Transactional Fraud Scorer
+    category: operational
+    specificity: 10
+    specializesId: t_gen_api
+    systemInstruction: >-
+      Runs automated behavior verification check arrays mapping active proxy IP signatures, velocity checks, and
+      biometric markers to return a 0-100 hazard value.
+    inputSchema: 'Input(Object): raw_checkout_telemetry, purchase_history'
+    outputSchema: 'Output(JSON): danger_integer_score, primary_trigger_reasons'
+    latencyProfile: ~210ms
+    'y': 482
+  - id: t_risk_block_user
+    label: Instant Profile Identity Access Override Service
+    category: operational
+    specificity: 10
+    specializesId: t_gen_api
+    systemInstruction: >-
+      Security isolation engine used to instantly flip user account flags to locked statuses, severing active JWT
+      sessions and restricting active card checkouts.
+    inputSchema: 'Input(String): user_profile_uuid, String: administrative_reason_tag'
+    outputSchema: 'Output(Boolean): success_operation_confirmation'
+    latencyProfile: ~85ms
+    'y': 592

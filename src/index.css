@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@layer components {
+  .field-label {
+    @apply block text-xs font-medium text-slate-500 mb-1;
+  }
+  .field-input {
+    @apply w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-xs text-slate-800 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400;
+  }
+}
