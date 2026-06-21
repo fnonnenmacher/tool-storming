@@ -54,6 +54,7 @@ export function CustomEdge({
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
               position: 'absolute',
               pointerEvents: 'all',
+              zIndex: 10,
             }}
             className="nodrag nopan"
           >

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   Background,
@@ -8,7 +8,7 @@ import {
   useReactFlow,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import type { NodeMouseHandler, OnNodeDrag } from '@xyflow/react';
+import type { NodeMouseHandler, OnNodeDrag, EdgeMouseHandler } from '@xyflow/react';
 import { useStore } from '@/store/useStore';
 import { PromptNode } from '@/components/nodes/PromptNode';
 import { ToolNode } from '@/components/nodes/ToolNode';
@@ -58,38 +58,6 @@ export function CanvasArea() {
   const snapNodeToColumn = useStore((s) => s.snapNodeToColumn);
   const reorderPersonaPrompts = useStore((s) => s.reorderPersonaPrompts);
   const activeNodeId = useStore((s) => s.activeNodeId);
-  const deleteNode = useStore((s) => s.deleteNode);
-
-  // Track whether any key has been pressed since the current node was selected.
-  // If Delete is the very first key press after selecting a node, delete it.
-  const canDeleteRef = useRef(false);
-  useEffect(() => {
-    canDeleteRef.current = true;
-  }, [activeNodeId]);
-
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (!activeNodeId) return;
-
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        if (canDeleteRef.current) {
-          e.preventDefault();
-          canDeleteRef.current = false;
-          deleteNode(activeNodeId);
-        }
-        // If canDeleteRef is false the input handles it normally
-      } else {
-        // Any non-delete key typed in an input marks this node as "being edited"
-        const el = document.activeElement;
-        if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
-          canDeleteRef.current = false;
-        }
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeNodeId, deleteNode]);
 
   const onNodeClick: NodeMouseHandler<ADCNode> = useCallback(
     (_, node) => {
@@ -100,6 +68,11 @@ export function CanvasArea() {
   );
 
   const onPaneClick = useCallback(() => {
+    setActiveNodeId(null);
+    setDrawerNodeId(null);
+  }, [setActiveNodeId, setDrawerNodeId]);
+
+  const onEdgeClick: EdgeMouseHandler = useCallback(() => {
     setActiveNodeId(null);
     setDrawerNodeId(null);
   }, [setActiveNodeId, setDrawerNodeId]);
@@ -126,9 +99,11 @@ export function CanvasArea() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeClick={onNodeClick}
+        onEdgeClick={onEdgeClick}
         onPaneClick={onPaneClick}
         onNodeDragStop={onNodeDragStop}
         connectionRadius={80}
+        deleteKeyCode={null}
         fitView
         proOptions={{ hideAttribution: true }}
       >
