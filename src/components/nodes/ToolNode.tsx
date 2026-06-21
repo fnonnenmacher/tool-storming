@@ -13,8 +13,8 @@ const categoryStyles: Record<string, string> = {
 
 const categoryLabel: Record<string, string> = {
   data: 'Data Product',
-  knowledge: 'Knowledge Base',
-  operational: 'Operational',
+  knowledge: 'Knowledge Product',
+  operational: 'Operational Product',
   ui: 'User Interface',
 };
 

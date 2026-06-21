@@ -19,7 +19,7 @@ This is a **design artifact**, not an execution engine. Use it to communicate ar
 - **Prompt nodes** — user requests inside a persona (e.g. "Who are my top-selling customers this month?"). Each prompt connects directly to every tool it needs.
 - **Tool nodes** — capabilities available to an agent, snapped to a 1–10 specificity axis. Four categories:
   - **Data Products** (green) — SQL databases, data warehouses
-  - **Knowledge Bases** (blue) — search engines, document indices
+  - **Knowledge Products** (blue) — search engines, document indices
   - **Operational Products** (yellow) — business logic APIs, ERP integrations
   - **User Interfaces** (purple) — table renderers, chart generators, dashboards
 - **Execution edges** (amber) — a prompt pointing to a tool it directly requires.
