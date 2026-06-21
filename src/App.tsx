@@ -23,7 +23,7 @@ export function App() {
       try {
         const decoded = decodeFromUrl(hash.slice('#canvas='.length));
         loadFromYaml(decoded);
-        setShowWelcome(false);
+        setShowWelcome(true);
         window.history.replaceState(null, '', window.location.pathname + window.location.search);
         return;
       } catch {
