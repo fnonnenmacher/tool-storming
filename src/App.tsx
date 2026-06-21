@@ -16,6 +16,7 @@ function decodeFromUrl(b64: string): string {
 export function App() {
   const loadFromYaml = useStore((s) => s.loadFromYaml);
   const setShowWelcome = useStore((s) => s.setShowWelcome);
+  const openWelcome = () => setShowWelcome(true);
 
   useEffect(() => {
     // URL-shared canvas takes priority over everything
@@ -39,13 +40,13 @@ export function App() {
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-slate-100">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2 shadow-sm">
-        <div className="flex items-center gap-2.5">
+        <button onClick={openWelcome} className="flex items-center gap-2.5 rounded hover:opacity-75 transition-opacity">
           <img src={logo} alt="Tool Storming" className="h-8 w-auto" />
-          <div>
+          <div className="text-left">
             <h1 className="text-sm font-bold text-slate-800 tracking-tight">Tool Storming</h1>
             <p className="text-xs text-slate-400">V1</p>
           </div>
-        </div>
+        </button>
         <ToolbarButtons />
       </header>
       <div className="flex flex-1 overflow-hidden">
