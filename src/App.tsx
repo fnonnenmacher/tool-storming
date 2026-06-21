@@ -50,6 +50,16 @@ export function App() {
         </main>
         <Drawer />
       </div>
+      <footer className="shrink-0 border-t border-slate-200 bg-white px-4 py-1.5 text-center text-[11px] text-slate-400">
+        © 2026{' '}
+        <a href="https://nonnenmacher.dev" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-slate-600">
+          Fabian Nonnenmacher
+        </a>
+        {' · '}
+        <a href="https://github.com/fnonnenmacher/tool-storming/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-slate-600">
+          Source on GitHub
+        </a>
+      </footer>
       <WelcomeOverlay />
     </div>
   );
