@@ -1,0 +1,18 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "tagName": "v${version}"
+  },
+  "github": {
+    "release": true,
+    "releaseName": "v${version}",
+    "assets": ["dist/index.html"]
+  },
+  "npm": {
+    "publish": false
+  },
+  "increment": "patch",
+  "hooks": {
+    "after:bump": "npm run build"
+  }
+}
